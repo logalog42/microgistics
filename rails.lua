@@ -108,22 +108,7 @@ minetest.register_node("microgistics:rail", {
 	connects_to = {"group:rail", "group:structures"},
 })
 
-minetest.register_node("microgistics:brake_rail", {
-	description = ("Brake Rail\nReduces the speed of a train."),
-	short_description = "Break Rail",
-	drawtype = "nodebox",
-	paramtype = "light",
-	groups = {dig_immediate = 2, rail = 1},
-	tiles = {
-		"train_new_top_brake.png",
-		"train_new_bottom.png",
-		"train_new_side.png",
-	},
-	node_box = rail_node_box,
-	collision_box = rail_collision_box,
-	selection_box = rail_collision_box,
-	connects_to = {"group:rail", "group:structures"},
-})
+
 
 -- minetest.register_node("trains:power_rail", {
 -- 	description = ("Powered Rail: Increases the speed of a train."),
