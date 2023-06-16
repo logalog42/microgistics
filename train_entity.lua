@@ -1,5 +1,5 @@
 --[[
-	Minegistics
+	microgistics
 		logalog
 		Droog71
 	License: AGPLv3
@@ -18,7 +18,7 @@ local function print_table(t)
 	end
 end
 
-
+--[[
 local load_orders = {
 	factory = {
 		input = {},
@@ -35,8 +35,8 @@ local load_orders = {
 }
 
 for output, inputs in pairs(RecipiesInStructure.Factory) do
-	load_orders.factory.input[inputs[1]] = true
-	load_orders.factory.input[inputs[2]] = true
+	load_orders.factory.input[inputs(1)] = true
+	load_orders.factory.input[inputs(2)] = true
 	load_orders.factory.output[output] = true
 end
 for inputs, output in pairs(RecipiesInStructure.Refinery) do
@@ -45,9 +45,10 @@ for inputs, output in pairs(RecipiesInStructure.Refinery) do
 end
 for inputs, output in pairs(RecipiesInStructure.Workshop) do
 	load_orders.workshop.input[inputs] = true
-	load_orders.workshop.output[output[1]] = true
-	load_orders.workshop.output[output[2]] = true
+	load_orders.workshop.output[output(1)] = true
+	load_orders.workshop.output[output(2)] = true
 end
+]]--
 
 local function spawn_passengers(train, pos)
 	if math.random(1, 20) == 1 then
@@ -130,18 +131,18 @@ local function update_train_cargo_display(train)
 		set_train_empty(train)
 	end
 end
-
+--[[
 --deposits or withdraws items at a factory
 local function factory_transaction(train, train_inv, contents)
 	for output, inputs in pairs(RecipiesInStructure.Factory) do
-		if train_inv[inputs[1]] then
-			contents:add_item("main", inputs[1] .. " " .. train_inv[inputs[1]])
-			train_inv[inputs[1]] = nil
+		if train_inv[inputs(1)] then
+			contents:add_item("main", inputs[1] .. " " .. train_inv[inputs(1)])
+			train_inv[inputs(1)] = nil
 			train.supply_train = true
 		end
-		if train_inv[inputs[2]] then
-			contents:add_item("main", inputs[2] .. " " .. train_inv[inputs[2]])
-			train_inv[inputs[2]] = nil
+		if train_inv[inputs(2)] then
+			contents:add_item("main", inputs[2] .. " " .. train_inv[inputs(2)])
+			train_inv[inputs(2)] = nil
 			train.supply_train = true
 		end
 	end
@@ -162,7 +163,7 @@ local function workshop_transaction(train, train_inv, contents)
 	for inputs, output in pairs(RecipiesInStructure.Workshop) do
 		if train_inv[inputs] then
 			contents:add_item("input", inputs .. " " .. train_inv[inputs])
-			train_inv[inputs[1]] = nil
+			train_inv[inputs(1)] = nil
 			train.supply_train = true
 		end
 	end
@@ -172,10 +173,10 @@ local function workshop_transaction(train, train_inv, contents)
 			local taken1 = contents:remove_item("output", (output[1] .. " " .. max_transfer))
 			local taken2 = contents:remove_item("output", (output[2] .. " " .. max_transfer))
 			if not taken1:is_empty() then
-				train_inv[output[1]] = (train_inv[output[1]] or 0) + taken1:get_count()
+				train_inv[output(1)] = (train_inv[output(1)] or 0) + taken1:get_count()
 			end
 			if not taken2:is_empty() then
-				train_inv[output[2]] = (train_inv[output[2]] or 0) + taken2:get_count()
+				train_inv[output(2)] = (train_inv[output(2)] or 0) + taken2:get_count()
 			end
 		end
 	end
@@ -215,7 +216,7 @@ local function collect(train, train_inv, contents, list)
 	end
 	update_train_cargo_display(train)
 end
-
+]]--
 
 --checks if the train is moving and if stopped check for a structure next to it.
 local function structure_check(train, dtime)
@@ -228,6 +229,7 @@ local function structure_check(train, dtime)
 		vector.new(pos.x, pos.y, pos.z - 1)
 	}
 	for i, direction in ipairs(directions) do
+		--[[
 		local structure_name = minetest.get_node(direction).name
 		local contents = minetest.get_inventory({type = "node", pos = direction})
 		if structure_name == "minegistics:Collector" then
@@ -252,6 +254,7 @@ local function structure_check(train, dtime)
 			end
 			update_train_cargo_display(train)
 		end
+		]]--
 	end
 end
 

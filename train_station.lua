@@ -91,53 +91,33 @@ local rail_collision_box = {
 	}
 }
 
-minetest.register_node("microgistics:rail", {
-	description = ("Rail\nFor trains."),
-	short_description = "Rail",
-	drawtype = "nodebox",
-	paramtype = "light",
-	groups = {dig_immediate = 2, rail = 1},
-	tiles = {
-		"train_new_top.png",
-		"train_new_bottom.png",
-		"train_new_side.png",
+microgistics.register_station("microgistics:train", {
+	description = S("Place for trains to stop and load/unload items"),
+	inventory_image = "train_station_wield.png",
+	wield_image = "train_station_wield.png",
+	drawtype = {
+		building = "mesh",
+		stop_point = "nodebox",
 	},
-	node_box = rail_node_box,
-	collision_box = rail_collision_box,
-	selection_box = rail_collision_box,
-	connects_to = {"group:rail", "group:structures"},
-})
-
-minetest.register_node("microgistics:brake_rail", {
-	description = ("Brake Rail stops train so it interacts with station."),
-	short_description = "Brake Rail",
-	drop = '',
-	drawtype = "nodebox",
-	paramtype = "light",
-	groups = {dig_immediate = 2, rail = 1},
-	tiles = {
-		"train_new_top_brake.png",
-		"train_new_bottom.png",
-		"train_new_side.png",
+	obj = "trainStation.obj",
+    tiles = {
+        building = "train_station.png",
+        stop_point = {
+            "train_new_top_brake.png",
+            "train_new_bottom.png",
+            "train_new_side.png",
+        },
+    },
+	nodebox = {
+		building = {-0.5, -0.5, -0.5, 0.5, 0.0625, 0.5},
+		stop_point = rail_node_box,
 	},
-	node_box = rail_node_box,
-	collision_box = rail_collision_box,
-	selection_box = rail_collision_box,
-	connects_to = {"group:rail"},
+    selectionbox = {
+		building = {-0.5, -0.5, -0.5, 0.5, 0.0625, 0.5},
+		stop_point = rail_node_box,
+	},
+	collisionbox = {
+        building = {},
+        stop_point = rail_collision_box
+    },
 })
-
--- minetest.register_node("trains:power_rail", {
--- 	description = ("Powered Rail: Increases the speed of a train."),
--- 	drawtype = "nodebox",
--- 	paramtype = "light",
--- 	groups = {dig_immediate = 2, rail = 1},
--- 	tiles = {
--- 		"train_new_top_power.png",
--- 		"train_new_bottom.png",
--- 		"train_new_side.png",
--- 	},
--- 	node_box = rail_node_box,
--- 	collision_box = rail_collision_box,
--- 	selection_box = rail_collision_box,
--- 	connects_to = {"group:rail", "group:structures"},
--- })
